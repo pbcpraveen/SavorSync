@@ -5,7 +5,6 @@ import sys
 path = Path(os.getcwd())
 sys.path.append(str(path.parent.absolute()))
 
-from commons.utils import *
 class RecipeUserFeature(Enum):
     TIME_TAKEN = 'timeTaken'
     NUM_INGREDIENTS = 'numIngredients'
@@ -24,11 +23,12 @@ class RecipeUserFeature(Enum):
 # set path from parent directory data/archive/interaction_text.csv
 path = Path(os.getcwd())
 parent = path.parent.absolute()
+parent = parent / 'SavourSync'
 normalising = parent / 'data_analysis/data/normalising_factor.pkl'
 
-test_path = parent / 'data/archive/interaction_test.csv'
-train_path = parent / 'data/archive/interaction_train.csv'
-val_path = parent / 'data/archive/interaction_validation.csv'
+test_path = parent / 'data/archive/interactions_test.csv'
+train_path = parent / 'data/archive/interactions_train.csv'
+val_path = parent / 'data/archive/interactions_validation.csv'
 
 processed_train_path = parent / 'data_analysis/data/trainData.pkl'
 processed_test_path = parent / 'data_analysis/data/testData.pkl'

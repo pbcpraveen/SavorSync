@@ -17,11 +17,12 @@ class LinearRegressionModel:
         self.std = None
         self.model = SGDRegressor(max_iter=n_iters)
 
-    def train(self, X, y):
+    def train(self):
         data = getProcessedData('train')
         x = data[0]
         y = data[1]
         pairs = data[2]
+        print()
         self.model.fit(x, y)
         # calculate training loss
         y_predicted = self.model.predict(x)

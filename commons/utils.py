@@ -19,6 +19,8 @@ def process_data(partition="train"):
     data = pd.read_csv(datapath)
     raw_recipes = pd.read_csv(raw_recipe)
     lookup = defaultdict(dict)
+    print("Processing data...")
+    print("Creating lookup table for recipes...")
     for i in tqdm(range(len(raw_recipes))):
         recipe_id = raw_recipes.iloc[i]['id']
         lookup[recipe_id][RecipeUserFeature.TIME_TAKEN.value] = int(raw_recipes.iloc[i]['minutes'])
@@ -29,6 +31,7 @@ def process_data(partition="train"):
     interactions_train = pd.read_csv(data_path['train'])
 
     ratingsPerUser = defaultdict(list)
+    print("Creating lookup table for users...")
     for index, row in tqdm(interactions_train.iterrows()):
         ratingsPerUser[row['user_id']].append(row['rating'])
 
@@ -37,6 +40,7 @@ def process_data(partition="train"):
         avgRatingPerUser[user_id] = np.mean(ratings)
 
     ratingsPerRecipe = defaultdict(list)
+    print("Creating lookup table for recipes...")
     for index, row in tqdm(interactions_train.iterrows()):
         ratingsPerRecipe[row['recipe_id']].append(row['rating'])
 
@@ -59,6 +63,7 @@ def process_data(partition="train"):
     globalAverageRating = interactions_train['rating'].mean()
     averageNutrition = np.array([eval(lookup[recipe_id]['nutrition']) for recipe_id in lookup]).mean(axis=0)
 
+    print("Collecting feature data...")
     for i in tqdm(range(len(data))):
         user_id = data.iloc[i]['u']
         recipe_id = data.iloc[i]['i']
@@ -79,10 +84,10 @@ def process_data(partition="train"):
             avgRatingForUser = avgRatingPerUser[user_id]
         else:
             avgRatingForUser = globalAverageRating
-        data = [timeTaken, numIngredients, numberOfSteps, avgRatingForUser, avgRatingForRecipe]
-        data.extend(nutrition)
+        datum = [timeTaken, numIngredients, numberOfSteps, avgRatingForUser, avgRatingForRecipe]
+        datum.extend(nutrition)
         label = rating
-        x.append(data)
+        x.append(datum)
         y.append(label)
         pairs.append((user_id, recipe_id))
 
