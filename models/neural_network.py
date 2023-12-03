@@ -1,6 +1,13 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import sys
+import os
+from pathlib import Path
+path = Path(os.getcwd())
+sys.path.append(str(path.parent.absolute()))
+from commons.constants import *
+from commons.utils import *
 
 class SimpleNeuralNetwork(nn.Module):
     def __init__(self, input_dim):
