@@ -91,7 +91,7 @@ def process_data(partition="train"):
         y.append(label)
         pairs.append((user_id, recipe_id))
 
-        return x, y, pairs
+    return x, y, pairs
 
 def getProcessedData(partition="train"):
     """Get the preprocessed data from the pickle file."""
