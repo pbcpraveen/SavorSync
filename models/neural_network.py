@@ -10,7 +10,7 @@ from commons.constants import *
 from commons.utils import *
 
 class SimpleNeuralNetwork(nn.Module):
-    def __init__(self, input_dim):
+    def __init__(self, input_dim, lr=0.001, n_iters=1000):
         super(SimpleNeuralNetwork, self).__init__()
         self.layer1 = nn.Linear(input_dim, 16)
         self.layer2 = nn.Linear(16, 8)

@@ -1,7 +1,7 @@
 from collections import defaultdict
 class LatentFactorModel(object):
-    def __init__(self, train_data, val_data):
-        self.train_data = train_data
+    def __init__(self, val_data):
+        self.train_data = None
         self.val_data = val_data
         self.recipes = set()
         self.users = set()
@@ -14,6 +14,7 @@ class LatentFactorModel(object):
         self.globalAverageRating = 0.0
 
     def preCompute(self):
+
         self.recipes = set()
         self.users = set()
         self.recipesPerUser = defaultdict(set)

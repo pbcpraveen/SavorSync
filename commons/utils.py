@@ -93,7 +93,22 @@ def process_data(partition="train"):
 
     return x, y, pairs
 
-def getProcessedData(partition="train"):
+def getTopkFeatures(x, y, k=12):
+    # gets top k features in x that are most correlated with y
+    # x is a numpy array of shape (n, d)
+    # y is a numpy array of shape (n, )
+    # k is an integer
+    corr = np.corrcoef(x, y, rowvar=False)
+    corr = corr[:-1, -1]
+    topk = np.argsort(np.abs(corr))[-k:]
+    # extract the top k features from x
+    x = x[:, topk]
+
+    return x
+
+
+
+def getProcessedData(partition="train", top_k=12):
     """Get the preprocessed data from the pickle file."""
     path = Path(os.getcwd())
     parent = path.parent.absolute()
@@ -124,4 +139,6 @@ def getProcessedData(partition="train"):
             pickle.dump((x, y, pairs), f)
     with open(processed_data_path[partition], 'rb') as f:
         data = pickle.load(f)
-    return data
+    x, y, pairs = data
+    x = getTopkFeatures(x, y, k=top_k)
+    return x, y, pairs
