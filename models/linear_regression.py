@@ -17,6 +17,7 @@ class LinearRegressionModel:
         self.topk = topk
         self.std = None
         self.model = SGDRegressor(max_iter=n_iters, eta0=self.lr,)
+        self.test = None
 
     def train(self):
         data = getProcessedData('train', top_k=self.topk)
@@ -43,9 +44,24 @@ class LinearRegressionModel:
 
     def predict(self):
         data = getProcessedData('test', top_k=self.topk)
+        self.test = data
         x_test = data[0]
         y_test = data[1]
         pairs_test = data[2]
         y_predicted = self.model.predict(x_test)
         test_mse = np.mean((y_test - y_predicted)**2)
         return test_mse
+
+    def getRatingWiseError(self):
+        data = getProcessedData('test', top_k=self.topk)
+        x_test = data[0]
+        y_test = data[1]
+        pairs_test = data[2]
+        error = {}
+        for i in np.unique(y_test):
+            #calculate mse of the rating
+            y_predicted = self.model.predict(x_test[y_test == i])
+            mse = np.mean((y_test[y_test == i] - y_predicted)**2)
+            error[i*5] = mse
+
+        return error
